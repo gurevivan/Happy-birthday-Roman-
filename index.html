@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>С Днём Рождения, Роман! 🎉</title>
+
+<!-- Красивое превью ссылки в мессенджерах -->
+<meta property="og:title" content="Тебя ждёт поздравление 🎁" />
+<meta property="og:description" content="Нажми, чтобы открыть свой подарок!" />
+<meta property="og:type" content="website" />
+
+<style>
+  :root{
+    --accent:#ff5e8a; --accent2:#ffb84d;
+    --bg1:#160a2b; --bg2:#2d1b4e;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:"Segoe UI",-apple-system,Roboto,Helvetica,Arial,sans-serif;
+    background:radial-gradient(circle at 50% -10%,var(--bg2),var(--bg1));
+    color:#fff;overflow-x:hidden;min-height:100vh;
+    display:flex;align-items:center;justify-content:center;
+    text-align:center;padding:24px;position:relative;
+  }
+  .name{
+    background:linear-gradient(90deg,var(--accent),var(--accent2));
+    -webkit-background-clip:text;background-clip:text;color:transparent;font-weight:800;
+  }
+
+  /* ===== Экран 1 ===== */
+  #intro{position:relative;z-index:5;animation:floatIn .8s ease both}
+  #intro h1{font-size:clamp(28px,7vw,52px);line-height:1.15;margin-bottom:12px;
+    text-shadow:0 4px 30px rgba(255,94,138,.5)}
+  #intro p{font-size:clamp(15px,4vw,20px);opacity:.85;margin-bottom:36px}
+  .gift-emoji{font-size:64px;display:block;margin-bottom:20px;animation:wiggle 2s infinite}
+  .gift-btn{
+    border:none;cursor:pointer;font-size:20px;font-weight:700;color:#fff;
+    padding:18px 40px;border-radius:50px;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    box-shadow:0 10px 40px rgba(255,94,138,.55);
+    transition:transform .15s ease;animation:pulse 1.8s infinite}
+  .gift-btn:hover{transform:translateY(-3px) scale(1.04)}
+  .gift-btn:active{transform:scale(.97)}
+
+  /* ===== Экран 2 ===== */
+  #stage{display:none;width:100%;max-width:640px;z-index:5;animation:floatIn .7s ease both}
+  #stage h2{font-size:clamp(26px,6.5vw,44px);margin-bottom:6px;
+    background:linear-gradient(90deg,#ff5e8a,#ffb84d,#7ee8fa,#ff5e8a);
+    background-size:300% auto;-webkit-background-clip:text;background-clip:text;color:transparent;
+    animation:shimmer 4s linear infinite}
+  #stage .sub{opacity:.8;margin-bottom:26px;font-size:clamp(14px,4vw,18px)}
+
+  /* ===== Анимированная сцена (торт + шарики) ===== */
+  .scene{
+    position:relative;height:300px;margin:0 auto 8px;max-width:480px;
+    border-radius:22px;overflow:hidden;
+    background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+    box-shadow:0 20px 60px rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.08)}
+
+  /* шарики */
+  .balloon{position:absolute;bottom:-140px;width:48px;height:60px;border-radius:50%;
+    opacity:.95;animation:rise linear infinite}
+  .balloon::after{content:"";position:absolute;bottom:-8px;left:50%;width:2px;height:40px;
+    background:rgba(255,255,255,.35);transform:translateX(-50%)}
+  .balloon::before{content:"";position:absolute;top:10px;left:12px;width:12px;height:16px;
+    border-radius:50%;background:rgba(255,255,255,.4)}
+  .b1{left:12%;background:#ff5e8a;animation-duration:7s}
+  .b2{left:32%;background:#ffb84d;animation-duration:9s;animation-delay:1.5s}
+  .b3{left:55%;background:#7ee8fa;animation-duration:8s;animation-delay:.6s}
+  .b4{left:74%;background:#a685e2;animation-duration:10s;animation-delay:2.2s}
+  .b5{left:88%;background:#52e3a3;animation-duration:7.5s;animation-delay:1s}
+
+  /* торт */
+  .cake{position:absolute;bottom:34px;left:50%;transform:translateX(-50%);width:170px}
+  .plate{position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);
+    width:200px;height:16px;border-radius:50%;background:rgba(255,255,255,.25)}
+  .tier{margin:0 auto;border-radius:10px 10px 6px 6px;position:relative}
+  .tier-bottom{width:170px;height:70px;background:linear-gradient(180deg,#ff8fb0,#ff5e8a)}
+  .tier-top{width:120px;height:55px;background:linear-gradient(180deg,#ffd27a,#ffb84d);margin-top:-6px}
+  .frost{position:absolute;top:-6px;left:0;width:100%;height:18px;
+    background:radial-gradient(circle at 10px 0,#fff 8px,transparent 9px) repeat-x;
+    background-size:20px 18px}
+  /* свечи */
+  .candle{position:absolute;top:-34px;width:8px;height:34px;border-radius:3px;
+    background:linear-gradient(180deg,#fff,#e8e8e8)}
+  .c1{left:46px}.c2{left:81px}.c3{left:116px}
+  .flame{position:absolute;top:-16px;left:50%;transform:translateX(-50%);
+    width:12px;height:18px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;
+    background:radial-gradient(circle at 50% 70%,#fff 2px,#ffd24a 5px,#ff7a18 11px);
+    filter:drop-shadow(0 0 8px #ff9b2e);animation:flicker .25s infinite alternate}
+
+  .message{margin-top:22px;font-size:clamp(15px,4vw,19px);line-height:1.6;opacity:.92}
+  .signature{margin-top:12px;font-style:italic;opacity:.7}
+  .replay{margin-top:22px;background:rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.25);color:#fff;padding:10px 22px;
+    border-radius:40px;cursor:pointer;font-size:15px;transition:background .2s}
+  .replay:hover{background:rgba(255,255,255,.22)}
+
+  #confetti{position:fixed;inset:0;pointer-events:none;z-index:1}
+
+  @keyframes pulse{0%,100%{box-shadow:0 10px 40px rgba(255,94,138,.55)}
+    50%{box-shadow:0 10px 55px rgba(255,184,77,.75)}}
+  @keyframes wiggle{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(6deg)}}
+  @keyframes floatIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes shimmer{to{background-position:300% center}}
+  @keyframes rise{0%{transform:translateY(0) translateX(0)}
+    50%{transform:translateY(-180px) translateX(14px)}
+    100%{transform:translateY(-360px) translateX(0);opacity:0}}
+  @keyframes flicker{from{transform:translateX(-50%) scale(1) rotate(-2deg);opacity:.9}
+    to{transform:translateX(-50%) scale(1.15) rotate(2deg);opacity:1}}
+</style>
+</head>
+<body>
+
+  <canvas id="confetti"></canvas>
+
+  <!-- ЭКРАН 1 -->
+  <section id="intro">
+    <span class="gift-emoji">🎁</span>
+    <h1>Привет, <span class="name" id="nameField">Роман</span>!</h1>
+    <p>Для тебя приготовлено поздравление. Нажми, чтобы открыть 👇</p>
+    <button class="gift-btn" onclick="openGift()">Открыть подарок 🎉</button>
+  </section>
+
+  <!-- ЭКРАН 2 -->
+  <section id="stage">
+    <h2>С Днём Рождения! 🥳</h2>
+    <div class="sub">Загляни, тут для тебя кое-что приготовили 👇</div>
+
+    <div class="scene">
+      <span class="balloon b1"></span><span class="balloon b2"></span>
+      <span class="balloon b3"></span><span class="balloon b4"></span>
+      <span class="balloon b5"></span>
+      <div class="cake">
+        <div class="candle c1"><span class="flame"></span></div>
+        <div class="candle c2"><span class="flame"></span></div>
+        <div class="candle c3"><span class="flame"></span></div>
+        <div class="tier tier-top"><span class="frost"></span></div>
+        <div class="tier tier-bottom"><span class="frost"></span></div>
+        <div class="plate"></div>
+      </div>
+    </div>
+
+    <p class="message" id="messageField">
+      Поздравляем с Днём Рождения! Пусть будет больше интересных задач,
+      лёгких дедлайнов и поводов для хорошего настроения. Успехов во всём —
+      и на работе, и за её пределами! 🎉
+    </p>
+    <p class="signature">С уважением, твои коллеги 🤝</p>
+
+    <button class="replay" onclick="replay()">↺ Запустить салют ещё раз</button>
+  </section>
+
+<script>
+  const CONFIG = { name:"Роман" };
+
+  const params = new URLSearchParams(location.search);
+  document.getElementById("nameField").textContent = params.get("name") || CONFIG.name;
+
+  const intro = document.getElementById("intro");
+  const stage = document.getElementById("stage");
+
+  function openGift(){
+    intro.style.display="none";
+    stage.style.display="block";
+    burstConfetti(240);
+  }
+  function replay(){ burstConfetti(160); }
+
+  /* Конфетти */
+  const canvas=document.getElementById("confetti"),ctx=canvas.getContext("2d");
+  let pieces=[];
+  function resize(){canvas.width=innerWidth;canvas.height=innerHeight}
+  resize();addEventListener("resize",resize);
+  const colors=["#ff5e8a","#ffb84d","#7ee8fa","#a685e2","#ffffff","#52e3a3"];
+  function burstConfetti(n){
+    for(let i=0;i<n;i++)pieces.push({
+      x:Math.random()*canvas.width,y:-20-Math.random()*canvas.height*.5,
+      r:4+Math.random()*6,c:colors[(Math.random()*colors.length)|0],
+      vx:-2+Math.random()*4,vy:2+Math.random()*4,
+      rot:Math.random()*Math.PI,vr:-.2+Math.random()*.4});
+  }
+  function tick(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    pieces.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.rot+=p.vr;p.vy+=.04;
+      ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot);
+      ctx.fillStyle=p.c;ctx.fillRect(-p.r/2,-p.r/2,p.r,p.r*.6);ctx.restore();});
+    pieces=pieces.filter(p=>p.y<canvas.height+30);
+    requestAnimationFrame(tick);
+  }
+  tick();
+  burstConfetti(60);
+</script>
+</body>
+</html>
